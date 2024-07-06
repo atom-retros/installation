@@ -2,15 +2,15 @@
 
 namespace Atom\Installation\Http\Controllers;
 
-use Illuminate\View\View;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Routing\Controller;
-use Atom\Installation\Models\WebsiteSetting;
-use Atom\Installation\Models\WebsiteInstallation;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Atom\Installation\Http\Requests\InstallationStoreCommand;
 use Atom\Installation\Http\Requests\InstallationUpdateCommand;
+use Atom\Installation\Models\WebsiteInstallation;
+use Atom\Installation\Models\WebsiteSetting;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class InstallationController extends Controller
 {

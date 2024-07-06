@@ -21,7 +21,7 @@ class InstallationMiddleware
             'installation_key' => Str::uuid(),
         ]);
 
-        if ($installation->completed && !$request->is('installation*')) {
+        if ($installation->completed && ! $request->is('installation*')) {
             return $next($request);
         }
 
