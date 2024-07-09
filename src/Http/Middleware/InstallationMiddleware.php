@@ -34,7 +34,7 @@ class InstallationMiddleware
         }
 
         if ($installation->completed && $request->is('installation*')) {
-            return redirect()->route('welcome');
+            return redirect()->route('index');
         }
 
         return match (true) {
