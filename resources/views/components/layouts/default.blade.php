@@ -10,7 +10,7 @@
     <link rel="icon" type="image/gif" sizes="18x17" href="{{ asset('assets/images/home_icon.gif') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
-    @vite(['resources/css/app.scss'], 'build')
+    @vite(['resources/css/app.css'], 'build')
     @stack('scripts')
 </head>
 
