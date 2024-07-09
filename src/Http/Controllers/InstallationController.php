@@ -63,7 +63,7 @@ class InstallationController extends Controller
         ]);
 
         if ($installation->completed) {
-            return redirect()->route('welcome');
+            return redirect()->route('index');
         }
 
         foreach ($request->validated() as $key => $value) {
