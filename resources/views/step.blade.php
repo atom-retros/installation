@@ -1,4 +1,4 @@
-<x-installation::layouts.default>
+<x-installation-layout>
     <x-installation::card icon="hotel-icon" title="{{ __('title') }}" subtitle="{{ __('subtitle') }}">
 
         <form action="{{ route('installation.update', ['installation' => $step]) }}" method="POST" class="space-y-3">
@@ -6,17 +6,24 @@
 
             @csrf
 
-            @forelse ($settings as $setting)
-                <x-installation::input id="{{ $setting->key }}" name="{{ $setting->key }}"
-                    label="{{ Str::replace('_', ' ', Str::ucfirst($setting->key)) }}" value="{{ $setting->value }}"
-                    type="text" placeholder="{{ $setting->key }}" autocomplete="false" required />
+            @forelse ($fields as $field)
+                <x-installation::input
+                    id="{{ $field }}"
+                    name="{{ $field }}"
+                    placeholder="{{ $field }}"
+                    value="{{ $settings->firstWhere('key', $field)?->value }}"
+                    label="{{ Str::replace('_', ' ', Str::ucfirst($field)) }}"
+                    type="text"
+                    autocomplete="false"
+                    required
+                />
             @empty
                 <div class="space-y-3">
                     <p>{{ __('step.message_1') }}</p>
                     <p>{{ __('step.message_2') }}</p>
                     <p>{!! __('step.message_3', ['documentation_link' => 'https://retros.guide']) !!}</p>
                     <p>{{ __('step.message_4') }}</p>
-                    <p class="font-semibold italic">{{ __('step.message_5') }}</p>
+                    <p class="italic font-semibold">{{ __('step.message_5') }}</p>
                 </div>
             @endforelse
 
@@ -44,4 +51,4 @@
             </form>
         </div>
     </x-installation::card>
-</x-installation::layouts.default>
+</x-installation-layout>

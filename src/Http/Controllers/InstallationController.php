@@ -40,14 +40,14 @@ class InstallationController extends Controller
     {
         $name = WebsiteSetting::firstWhere('key', 'hotel_name');
 
+        $step = $installation;
+
+        $fields = Arr::get(config('installation.settings', []), $installation, []);
+
         $settings = WebsiteSetting::whereIn('key', Arr::get(config('installation.settings', []), $installation, []))
             ->get();
 
-        return view('installation::step', [
-            'name' => $name,
-            'step' => $installation,
-            'settings' => $settings,
-        ]);
+        return view('installation::step', compact('name', 'step', 'fields', 'settings'));
     }
 
     /**

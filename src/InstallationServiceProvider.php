@@ -2,27 +2,37 @@
 
 namespace Atom\Installation;
 
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-class InstallationServiceProvider extends PackageServiceProvider
+class InstallationServiceProvider extends ServiceProvider
 {
     /**
-     * Configure the package.
+     * Register any application services.
+     *
+     * @return void
      */
-    public function configurePackage(Package $package): void
+    public function register()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->mergeConfigFrom(
+            path: __DIR__.'/../config/installation.php',
+            key: 'installation'
+        );
 
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'installation');
+        $this->loadMigrationsFrom(
+            paths: __DIR__.'/../database/migrations'
+        );
 
-        $package
-            ->name('installation')
-            ->hasConfigFile()
-            ->hasRoute('web')
-            ->hasViews()
-            ->hasTranslations()
-            ->hasMigrations(['create_website_installation_table'])
-            ->runsMigrations();
+        $this->loadJsonTranslationsFrom(
+            path: __DIR__.'/../resources/lang'
+        );
+
+        $this->loadViewsFrom(
+            path: __DIR__.'/../resources/views',
+            namespace: 'installation',
+        );
+
+        $this->loadRoutesFrom(
+            path: __DIR__.'/../routes/web.php'
+        );
     }
 }
