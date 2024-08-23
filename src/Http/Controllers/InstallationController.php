@@ -2,8 +2,8 @@
 
 namespace Atom\Installation\Http\Controllers;
 
-use Atom\Installation\Http\Requests\InstallationStoreCommand;
-use Atom\Installation\Http\Requests\InstallationUpdateCommand;
+use Atom\Installation\Http\Requests\InstallationStoreRequest;
+use Atom\Installation\Http\Requests\InstallationUpdateRequest;
 use Atom\Installation\Models\WebsiteInstallation;
 use Atom\Installation\Models\WebsiteSetting;
 use Illuminate\Routing\Controller;
@@ -25,7 +25,7 @@ class InstallationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(InstallationStoreCommand $request): RedirectResponse
+    public function store(InstallationStoreRequest $request): RedirectResponse
     {
         WebsiteInstallation::first()
             ->update(['step' => 1, 'user_ip' => $request->ip()]);
@@ -38,22 +38,19 @@ class InstallationController extends Controller
      */
     public function show(int $installation): View
     {
-        $name = WebsiteSetting::firstWhere('key', 'hotel_name');
-
-        $step = $installation;
-
-        $fields = Arr::get(config('installation.settings', []), $installation, []);
-
-        $settings = WebsiteSetting::whereIn('key', Arr::get(config('installation.settings', []), $installation, []))
-            ->get();
-
-        return view('installation::step', compact('name', 'step', 'fields', 'settings'));
+        return view('installation::step', [
+            'name' => WebsiteSetting::firstWhere('key', 'hotel_name'),
+            'step' => $installation,
+            'fields' => Arr::get(config('installation.settings', []), $installation, []),
+            'settings' => WebsiteSetting::whereIn('key', array_keys(Arr::get(config('installation.settings', []), $installation, [])))
+                ->get(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(InstallationUpdateCommand $request, int $installation): RedirectResponse
+    public function update(InstallationUpdateRequest $request, int $installation): RedirectResponse
     {
         $installation = WebsiteInstallation::first();
 
@@ -67,9 +64,11 @@ class InstallationController extends Controller
         }
 
         foreach ($request->validated() as $key => $value) {
+            $config = Arr::get(config('installation.settings', []), sprintf('%s.%s', $installation, $key), []);
+
             WebsiteSetting::updateOrCreate(
                 ['key' => $key],
-                ['value' => $value]
+                ['value' => $value, 'comment' => Arr::get($config, 'comment', '')],
             );
         }
 

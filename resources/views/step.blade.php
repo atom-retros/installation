@@ -6,13 +6,13 @@
 
             @csrf
 
-            @forelse ($fields as $field)
+            @forelse ($fields as $key => $field)
                 <x-installation::input
-                    id="{{ $field }}"
-                    name="{{ $field }}"
-                    placeholder="{{ $field }}"
-                    value="{{ $settings->firstWhere('key', $field)?->value }}"
-                    label="{{ Str::replace('_', ' ', Str::ucfirst($field)) }}"
+                    id="{{ $key }}"
+                    name="{{ $key }}"
+                    placeholder="{{ $key }}"
+                    value="{{ $settings->firstWhere('key', $key)?->value ?: $field['default'] }}"
+                    label="{{ Str::replace('_', ' ', Str::ucfirst($key)) }}"
                     type="text"
                     autocomplete="false"
                     required

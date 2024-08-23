@@ -4,7 +4,7 @@ namespace Atom\Installation\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class InstallationStoreCommand extends FormRequest
+class InstallationStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

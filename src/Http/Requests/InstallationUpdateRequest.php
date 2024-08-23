@@ -5,7 +5,7 @@ namespace Atom\Installation\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 
-class InstallationUpdateCommand extends FormRequest
+class InstallationUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class InstallationUpdateCommand extends FormRequest
      */
     public function rules(): array
     {
-        $columns = Arr::get(config('installation.settings', []), $this->route('installation'), []);
+        $columns = array_keys(Arr::get(config('installation.settings', []), $this->route('installation'), []));
 
         return collect($columns)
             ->mapWithKeys(fn ($column) => [$column => ['required', 'string']])
